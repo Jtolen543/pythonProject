@@ -9,62 +9,43 @@ def to_hex_string(data):
 
 
 def count_runs(flat_data):
-    global consecutive
-    count = 0
-    for i in range(len(flat_data) - 1):
-        if flat_data[i] == flat_data[i + 1]:
-            count += 1
-            if count == 4:
-                consecutive = True
-                break
-        else:
-            count = 0
-        consecutive = False
     total_runs = 0
-    if consecutive == True:
-        for i in range(0, 16):
-            runs = flat_data.count(i)
-            if i in flat_data:
-                if runs % 15 == 0:
-                    total_runs += runs // 15
-                else:
-                    total_runs += runs // 15 + 1
-    elif consecutive == False:
-        for i in flat_data:
+    count = 0
+    for i in range(1, len(flat_data)):
+        if flat_data[i-1] == flat_data[i]:  # checks if the first number is equal to the next number in list
+            count += 1  # adds one to the count
+            if count == 15:  # if the count reaches 15 it adds to the total runs and restarts the count
+                total_runs += 1
+                count = 0
+        elif flat_data[i-1] != flat_data[i]:  # if not equal to next number in list, restarts the count and adds to runs
+            count = 0
             total_runs += 1
+    if flat_data[-1] == flat_data[-2]:  # essentially here for clarify, but after it reaches the last number in the list
+        total_runs += 1  # we can just add one since it'll conclude the total runs for any condition
+    elif flat_data[-1] != flat_data[-2]:
+        total_runs += 1
     return total_runs
 
 
 def encode_rle(flat_data):
-    count = 0
-    repeat_list = []
-    compressed_list = []
-    for i in range(len(flat_data) - 1):
-        if flat_data[i] == flat_data[i + 1]:
-            count += 1
-            if count == 4:
-                consecutive = True
-                break
-        else:
-            count = 0
-        consecutive = False
-    if consecutive is True:
-        for i in flat_data:
-            if i not in repeat_list:
-                repeat_list.append(i)
-                x = flat_data.count(i)
-                if x < 15:
-                    compressed_list.extend([flat_data.count(i), i])
-                elif x > 15:
-                    while x > 15:
-                        compressed_list.extend([15, i])
-                        x -= 15
-                    compressed_list.extend([x, i])
-    elif consecutive is False:
-        for i in flat_data:
-            compressed_list.append(1)
-            compressed_list.append(i)
-    return compressed_list
+    rle_data = []
+    total_runs = 0
+    for i in range(1, len(flat_data)):
+        if flat_data[i-1] == flat_data[i]:  # checks if current number is equal to next number in sequence
+            total_runs += 1  # if so, total runs is updated by 1
+            if total_runs == 15:  # if total runs reaches 15, it appends 15 and the number to the list and restarts runs
+                rle_data.extend([total_runs, flat_data[i-1]])
+                total_runs = 0
+        if flat_data[i-1] != flat_data[i]:  # if not equal, appends current number of runs +1 and number to the list
+            total_runs += 1
+            rle_data.extend([total_runs, flat_data[i-1]])
+            total_runs = 0
+    if flat_data[-1] == flat_data[-2]:  # checks for the last number, if equal to second to last, the total runs is
+        total_runs += 1  # already stored and able to be added by 1, gets appended to list with respective number
+        rle_data.extend([total_runs, flat_data[-1]])
+    if flat_data[-1] != flat_data[-2]:  # if not equal to second to last number, the number is appended to list by [1,x]
+        rle_data.extend([1, flat_data[-1]])
+    return rle_data
 
 
 def get_decoded_length(rle_data):
@@ -90,3 +71,5 @@ def string_to_data(data_string):
         elif i in ['a', 'b', 'c', 'd', 'e', 'f']:
             data_string_list.append(ord(i) - 87)
     return data_string_list
+
+
