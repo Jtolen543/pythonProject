@@ -12,9 +12,9 @@ def list_cows(cows):
 def find_cows(name, cows):
     for cow in cows:
         if name == cow.name:
-            return cow.image
+            return cow
     else:
-        return f"Could not find {name} cow!"
+        return None
 
 
 def main():
@@ -26,12 +26,17 @@ def main():
     elif sys.argv[1] == "-l":
         list_cows(cows)
     elif sys.argv[1] == "-n":
-        cow_name = find_cows(sys.argv[2], cows)
+        obj = find_cows(sys.argv[2], cows)
         if len(sys.argv) > 3 and sys.argv[2] in animal_list:
             print(" ".join(sys.argv[3:]) + "")
-        print(cow_name)
-        if isinstance(cow_name, Dragon):
-            if cow_n
+            print(obj.image)
+        else:
+            print(f"Could not find {sys.argv[2]} cow!")
+        if isinstance(obj, Dragon):
+            if obj.can_breathe_fire():
+                print("This dragon can breathe fire.")
+            else:
+                print("This dragon cannot breathe fire.")
     else:
         print(" ".join(sys.argv[1:]) + "")
         print(find_cows("heifer", cows))
@@ -39,4 +44,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
