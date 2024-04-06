@@ -22,21 +22,23 @@ def main():
         else:
             print("Please enter a valid size.")
             continue
-    print(f"The Pakudex can hold {pak.get_capacity()} species of Pakuri\n")
+    print(f"The Pakudex can hold {pak.get_capacity()} species of Pakuri.\n")
     while True:
         menu()
-        choice = int(input("What would you like to do? "))
-        if choice == 1:
+        choice = input("What would you like to do? ")
+        if choice.isdigit() is False or int(choice) not in range(1, 7):
+            print("Unrecognized menu selection!\n")
+        elif int(choice) == 1:
             if pak.get_size() == 0:
                 print("No Pakuri in Pakudex yet!\n")
             else:
-                print("\nPakuri in Pakudex:")
-                for i, pakuri in enumerate(pak.pakudex_party):
+                print("\nPakuri In Pakudex:")
+                for i, pakuri in enumerate(pak.get_species_array().split(" ")):
                     print(f"{i + 1}. {pakuri}")
                 print("\t")
-        elif choice == 2:
+        elif int(choice) == 2:
             specie_name = input("Enter the name of the species to display: ")
-            if specie_name in pak.pakudex_party:
+            if pak.get_size() != 0 and specie_name in pak.get_species_array().split(" "):
                 details = ["Species", "Attack", "Defense", "Speed"]
                 stats = [specie_name] + pak.get_stats(specie_name)
                 data = dict(zip(details, stats))
@@ -44,29 +46,30 @@ def main():
                 for key, value in data.items():
                     print(f"{key}: {value}")
                 print('\t')
-            elif specie_name not in pak.pakudex_party:
+            else:
                 print("Error: No such Pakuri!\n")
-        elif choice == 3:
+        elif int(choice) == 3:
             if pak.get_size() == pak.get_capacity():
                 print("Error: Pakudex is full!\n")
             else:
                 pak_add = input("Enter the name of the species to add: ")
-                if pak_add in pak.pakudex_party:
+                if pak.get_size() != 0 and pak_add in pak.get_species_array().split(" "):
                     print("Error: Pakudex already contains this species!\n")
                 elif pak.add_pakuri(pak_add):
                     print(f"Pakuri species {pak_add} successfully added!\n")
-        elif choice == 4:
+        elif int(choice) == 4:
             pak_evolve = input("Enter the name of the species to evolve: ")
             if pak.evolve_species(pak_evolve):
                 print(f"{pak_evolve} has evolved!\n")
             else:
                 print("No such Pakuri!\n")
-        elif choice == 5:
+        elif int(choice) == 5:
             pak.sort_pakuri()
             print("Pakuri have been sorted!\n")
-        elif choice == 6:
+        elif int(choice) == 6:
             print("Thanks for using Pakudex! Bye!")
             break
 
 
-main()
+if __name__ == "__main__":
+    main()
