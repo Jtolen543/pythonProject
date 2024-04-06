@@ -52,6 +52,5 @@ test.add_pakuri("Pikachu")
 test.add_pakuri("Charazard")
 test.add_pakuri("Blastoise")
 test.add_pakuri("Venusaur")
-print(test.)
 
 
