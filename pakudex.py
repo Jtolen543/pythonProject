@@ -17,18 +17,20 @@ class Pakudex:
         if len(self.pakudex_party) == 0:
             return None
         else:
-            self.pakudex_party = " ".join(self.pakudex_party)
-            return self.pakudex_party
+            array = " ".join([name.get_species() for name in self.pakudex_party])
+            return array
 
     def get_stats(self, species):
-        if species not in self.pakudex_party:
+        if species not in [name.get_species() for name in self.pakudex_party]:
             return None
         else:
-            self.stats = []
-            return self.stats
+            for specie in self.pakudex_party:
+                if specie.get_species() == species:
+                    self.stats = [specie.get_attack(), specie.get_defense(), specie.get_speed()]
+                    return self.stats
 
     def sort_pakuri(self):
-        self.pakudex_party = sorted(self.pakudex_party)
+        self.pakudex_party.sort(key=lambda x: x.get_species())
         return self.pakudex_party
 
     def add_pakuri(self, species):
@@ -36,21 +38,15 @@ class Pakudex:
             return False
         if len(self.pakudex_party) != 20:
             name = Pakuri(species)
-            print(name)
             self.pakudex_party.append(name)
             return True
 
     def evolve_species(self, species):
-        if species not in self.pakudex_party:
+        if species not in [name.get_species() for name in self.pakudex_party]:
             return False
-        elif species in self.pakudex_party:
-
-            return True
-
-test = Pakudex()
-test.add_pakuri("Pikachu")
-test.add_pakuri("Charazard")
-test.add_pakuri("Blastoise")
-test.add_pakuri("Venusaur")
-
-
+        else:
+            for specie in self.pakudex_party:
+                if specie.get_species() == species:
+                    specie.evolve()
+                    return True
+        return False
