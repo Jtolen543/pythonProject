@@ -26,3 +26,4 @@ class Pakuri:
         self.defense = self.defense * 4
         self.speed = self.speed * 3
         return [self.attack, self.defense, self.speed]
+

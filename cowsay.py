@@ -18,17 +18,17 @@ def find_cows(name, cows):
 
 
 def main():
-    cows = HeiferGenerator().get_cows()
+    cows = HeiferGenerator.get_cows()
     animal_list = [cow.name for cow in cows]
     if len(sys.argv) == 1:
-        print("".join(sys.argv[1:]) + "")
-        print(find_cows("heifer", cows))
+        print("".join(sys.argv[1:]) + " ")
+        print(find_cows("heifer", cows).image)
     elif sys.argv[1] == "-l":
         list_cows(cows)
     elif sys.argv[1] == "-n":
         obj = find_cows(sys.argv[2], cows)
         if len(sys.argv) > 3 and sys.argv[2] in animal_list:
-            print(" ".join(sys.argv[3:]) + "")
+            print(" ".join(sys.argv[3:]) + " ")
             print(obj.image)
         else:
             print(f"Could not find {sys.argv[2]} cow!")
@@ -38,8 +38,8 @@ def main():
             else:
                 print("This dragon cannot breathe fire.")
     else:
-        print(" ".join(sys.argv[1:]) + "")
-        print(find_cows("heifer", cows))
+        print(" ".join(sys.argv[1:]) + " ")
+        print(find_cows("heifer", cows).image)
 
 
 if __name__ == "__main__":
