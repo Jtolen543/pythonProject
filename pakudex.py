@@ -17,7 +17,7 @@ class Pakudex:
         if len(self.pakudex_party) == 0:
             return None
         else:
-            array = " ".join([name.get_species() for name in self.pakudex_party])
+            array = [name.get_species() for name in self.pakudex_party]
             return array
 
     def get_stats(self, species):
@@ -34,9 +34,11 @@ class Pakudex:
         return self.pakudex_party
 
     def add_pakuri(self, species):
-        if len(self.pakudex_party) == 20:
+        if species in [name.get_species() for name in self.pakudex_party]:
             return False
-        if len(self.pakudex_party) != 20:
+        elif len(self.pakudex_party) == self.capacity:
+            return False
+        elif len(self.pakudex_party) != self.capacity:
             name = Pakuri(species)
             self.pakudex_party.append(name)
             return True

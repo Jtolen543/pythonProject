@@ -33,19 +33,19 @@ def main():
                 print("No Pakuri in Pakudex yet!\n")
             else:
                 print("\nPakuri In Pakudex:")
-                for i, pakuri in enumerate(pak.get_species_array().split(" ")):
+                for i, pakuri in enumerate(pak.get_species_array()):
                     print(f"{i + 1}. {pakuri}")
                 print("\t")
         elif int(choice) == 2:
             specie_name = input("Enter the name of the species to display: ")
-            if pak.get_size() != 0 and specie_name in pak.get_species_array().split(" "):
+            if pak.get_size() != 0 and specie_name in pak.get_species_array():
                 details = ["Species", "Attack", "Defense", "Speed"]
                 stats = [specie_name] + pak.get_stats(specie_name)
                 data = dict(zip(details, stats))
                 print('\t')
                 for key, value in data.items():
                     print(f"{key}: {value}")
-                print('\t')
+                print("\t")
             else:
                 print("Error: No such Pakuri!\n")
         elif int(choice) == 3:
@@ -53,16 +53,16 @@ def main():
                 print("Error: Pakudex is full!\n")
             else:
                 pak_add = input("Enter the name of the species to add: ")
-                if pak.get_size() != 0 and pak_add in pak.get_species_array().split(" "):
-                    print("Error: Pakudex already contains this species!\n")
-                elif pak.add_pakuri(pak_add):
+                if pak.add_pakuri(pak_add):
                     print(f"Pakuri species {pak_add} successfully added!\n")
+                else:
+                    print("Error: Pakudex already contains this species!\n")
         elif int(choice) == 4:
             pak_evolve = input("Enter the name of the species to evolve: ")
             if pak.evolve_species(pak_evolve):
                 print(f"{pak_evolve} has evolved!\n")
             else:
-                print("No such Pakuri!\n")
+                print("Error: No such Pakuri!\n")
         elif int(choice) == 5:
             pak.sort_pakuri()
             print("Pakuri have been sorted!\n")

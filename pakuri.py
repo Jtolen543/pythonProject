@@ -26,10 +26,3 @@ class Pakuri:
         self.defense = self.defense * 4
         self.speed = self.speed * 3
         return [self.attack, self.defense, self.speed]
-
-
-c1 = "???"
-c2 = "3"
-
-if c1.isdigit is False or int(c2) not in range(1, 7):
-    print("True")
