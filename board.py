@@ -1,6 +1,8 @@
 import pygame
 import sys
 from cell import Cell
+from sudoku_project import generate_sudoku
+from sudoku_project import SudokuGenerator
 
 
 class Board:
@@ -10,7 +12,10 @@ class Board:
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
-        self.cells = [[Cell("-", i, j, screen) for j in range(9)] for i in range(9)]
+        removal = {"easy": 30, "medium": 40, "hard": 50}
+        self.solution, self.original_board = generate_sudoku(9, removal[difficulty])
+        self.player_board = self.original_board
+        self.cells = [[Cell(self.player_board[i][j], i, j, screen) for j in range(9)] for i in range(9)]
 
     def draw(self):
         for i in range(10):
@@ -30,7 +35,7 @@ class Board:
 
     def select(self, row, col):
         if None is row or None is col:
-            pass
+            return None
         for cells in self.cells:
             for cell in cells:
                 cell.selected = False
@@ -46,19 +51,57 @@ class Board:
         return tuple(location)
 
     def clear(self):
-        pass
+        for row in self.cells:
+            i = self.cells.index(row)
+            for cell in row:
+                j = row.index(cell)
+                if cell.selected:
+                    cell.set_sketched_value(None)
+                    if cell.value != self.player_board[i][j]:
+                        cell.set_cell_value(0)
 
     def sketch(self, value):
+        for row in self.cells:
+            for cell in row:
+                if cell.selected:
+                    cell.set_sketched_value(value)
+        pass
+
+    def place_number(self, value):
+        for row in self.cells:
+            i = self.cells.index(row)
+            for cell in row:
+                j = row.index(cell)
+                if cell.selected:
+                    if self.original_board[i][j] == 0:
+                        cell.set_cell_value(value)
+                else:
+                    pass
+
+
+    def reset_to_original(self):
+        pass
+
+    def is_full(self):
+        pass
+
+    def update_board(self):
+        pass
+
+    def find_empty(self):
+        pass
+
+    def check_board(self):
         pass
 
 
 BG_COLOR = (164, 206, 224)
-screen = pygame.display.set_mode((600, 600))
+screen1 = pygame.display.set_mode((600, 600))
 pygame.display.set_caption("Sudoku")
-test = Board(600, 600, screen, "Easy")
+test = Board(600, 600, screen1, "easy")
 
 while True:
-    screen.fill(BG_COLOR)
+    screen1.fill(BG_COLOR)
     test.draw()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -66,7 +109,17 @@ while True:
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             x2, y2 = event.pos
-            print(test.click(x2, y2))
             loc1, loc2 = test.click(x2, y2)
             test.select(loc2, loc1)
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_BACKSPACE:
+                test.sketch(None)
+            elif event.key == pygame.K_DELETE:
+                test.sketch(None)
+            elif chr(event.key) in [str(i) for i in range(1, 10)]:
+                test.sketch(chr(event.key))
+            elif event.key == pygame.K_KP_ENTER:
+
+            else:
+                continue
     pygame.display.update()

@@ -6,7 +6,7 @@ class SudokuGenerator:
     def __init__(self, row_length: int, removed_cells: int):
         self.removed_cells = removed_cells
         self.row_length = row_length
-        self.board = [[0] * self.row_length for _ in range(row_length)]  # initializes board to be generated
+        self.board = [[0] * self.row_length for i in range(row_length)]  # initializes board to be generated
         self.box_length = int(math.sqrt(row_length))  # must be integer to avoid TypeError
 
     def get_board(self):
@@ -114,7 +114,5 @@ def generate_sudoku(size, removed):
     board_solution = sudoku.get_board()
     sudoku.remove_cells()
     board = sudoku.get_board()
-    return board
+    return board_solution, board
 
-
-generated = generate_sudoku(9, 51)

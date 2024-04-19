@@ -33,5 +33,3 @@ class Cell:
             put = font.render(str(self.value), True, (0, 0, 0))
             rect2 = put.get_rect(center=(self.column * width + width / 2, self.row * height + height / 2))
             self.screen.blit(put, rect2)
-
-
