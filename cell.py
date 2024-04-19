@@ -1,6 +1,4 @@
 import pygame
-import sys
-from sudoku_project import SudokuGenerator
 
 
 class Cell:
@@ -10,6 +8,7 @@ class Cell:
         self.column = col
         self.screen = screen
         self.sketched_value = None
+        self.selected = False
 
     def set_cell_value(self, value):
         self.value = value
@@ -19,15 +18,20 @@ class Cell:
         self.sketched_value = value
         return self.sketched_value
 
-    def draw(self):
-        pygame.draw.rect(self.screen, (255, 0, 0), (0, 0, 200, 200), 3)
+    def draw(self, width, height):
         pygame.font.init()
         font = pygame.font.Font(None, 40)
-        put = font.render(str(self.value), True, (128, 128, 128))
-        self.screen.blit(put, (10, 10))
+        if self.sketched_value is not None:
+            sketch = font.render(str(self.sketched_value), True, (128, 128, 128))
+            rect0 = sketch.get_rect(center=(self.column * width + width / 4, self.row * height + height / 4))
+            self.screen.blit(sketch, rect0)
+        if self.selected:
+            outline = (255, 0, 0)
+            rect1 = pygame.Rect(self.column * width, self.row * height, width, height)
+            pygame.draw.rect(self.screen, outline, rect1, 3)
+        if self.value != 0:
+            put = font.render(str(self.value), True, (0, 0, 0))
+            rect2 = put.get_rect(center=(self.column * width + width / 2, self.row * height + height / 2))
+            self.screen.blit(put, rect2)
 
 
-# screen1 = pygame.display.set_mode((200, 200))
-# test = Cell(9, 8, 8, screen1)
-# screen1.fill((255, 255, 255))
-# test.draw()

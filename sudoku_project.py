@@ -115,3 +115,6 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+
+
+generated = generate_sudoku(9, 51)
